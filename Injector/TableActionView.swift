@@ -37,29 +37,21 @@ class TableActionView: NSViewController {
             make.left.right.equalToSuperview()
         }
         
-        buttonBarBackground.bezelStyle = .smallSquare
-        buttonBarBackground.setButtonType(.momentaryChange)
-        view.addSubview(buttonBarBackground)
-        buttonBarBackground.snp.makeConstraints() { make in
-            make.bottom.equalToSuperview().offset(1)
-            make.right.equalToSuperview().offset(1)
-            make.top.equalTo(scrollView.snp.bottom)
-            
-        }
-        
         buttonBar.segmentStyle = .smallSquare
-        buttonBar.segmentCount = 2
+        buttonBar.segmentCount = 3
+        buttonBar.trackingMode = .momentary
+        buttonBar.segmentDistribution = .fillEqually
         buttonBar.setImage(NSImage(named: "NSAddTemplate"), forSegment: 0)
         buttonBar.setImage(NSImage(named: "NSRemoveTemplate"), forSegment: 1)
+        buttonBar.setWidth(32, forSegment: 0)
+        buttonBar.setWidth(32, forSegment: 1)
+        buttonBar.setEnabled(false, forSegment: 2)
         view.addSubview(buttonBar)
         buttonBar.snp.makeConstraints() { make in
-            make.bottom.equalToSuperview().offset(1)
+            make.bottom.right.equalToSuperview().offset(1)
             make.left.equalToSuperview().offset(-1)
-            make.right.equalTo(buttonBarBackground.snp.left).inset(1)
             make.top.equalTo(scrollView.snp.bottom)
         }
-        
-        
     }
     
     required init?(coder: NSCoder) {
