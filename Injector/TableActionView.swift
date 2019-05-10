@@ -33,8 +33,7 @@ class TableActionView: NSViewController {
         
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints() { make in
-            make.top.equalToSuperview().priority(NSLayoutConstraint.Priority.windowSizeStayPut.rawValue - 1)
-            make.left.right.equalToSuperview()
+            make.top.left.right.equalToSuperview()
         }
         
         buttonBar.segmentStyle = .smallSquare
