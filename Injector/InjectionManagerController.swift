@@ -24,8 +24,8 @@ class InjectionManagerController: NSViewController {
         let tableView = tableViewController.view
         splitView.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.width.greaterThanOrEqualTo(150).priority(750)
-            make.width.lessThanOrEqualTo(view).dividedBy(2).priority(249)
+            make.width.greaterThanOrEqualTo(150).priority(500)
+            make.width.lessThanOrEqualTo(view).dividedBy(2).priority(500)
         }
         
         splitView.addSubview(editView)
