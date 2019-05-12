@@ -10,28 +10,20 @@ import Cocoa
 import SnapKit
 
 class InjectionManagerController: NSViewController {
-    let splitView = NSSplitView(frame: NSRect(x: 0, y: 0, width: 600, height: 400))
-    let tableViewController = TableActionView()
-    let editView = NSView()
-    
-    init() {
-        super.init(nibName: nil, bundle: nil)
-        view = splitView
+    override func loadView() {
+        let splitView = NSSplitView(frame: NSRect(x: 0, y: 0, width: 600, height: 400))
         splitView.isVertical = true
         splitView.dividerStyle = .thin
+        view = splitView
         
+        let tableViewController = TableActionViewController()
         addChild(tableViewController)
-        let tableView = tableViewController.view
-        splitView.addSubview(tableView)
-        tableView.snp.makeConstraints { make in
+        splitView.addSubview(tableViewController.view)
+        tableViewController.view.snp.makeConstraints { make in
             make.width.greaterThanOrEqualTo(150).priority(500)
             make.width.lessThanOrEqualTo(view).dividedBy(2).priority(500)
         }
         
-        splitView.addSubview(editView)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        splitView.addSubview(NSView())
     }
 }

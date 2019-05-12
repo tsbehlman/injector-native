@@ -9,33 +9,30 @@
 import Cocoa
 import SnapKit
 
-class TableActionView: NSViewController {
-    let scrollView = NSScrollView();
-    let tableView = NSTableView()
-    let buttonBar = NSSegmentedControl()
-    let buttonBarBackground = NSButton(title: " ", target: nil, action: nil)
-    
-    init() {
-        super.init(nibName: nil, bundle: nil)
+class TableActionViewController: NSViewController {
+    override func loadView() {
         view = NSView()
         
-        tableView.usesAlternatingRowBackgroundColors = true
-        tableView.rowSizeStyle = .large
+        let scrollView = NSScrollView()
+        view.addSubview(scrollView)
+        scrollView.snp.makeConstraints() { make in
+            make.top.left.right.equalToSuperview()
+        }
+        
+        let tableView = NSTableView()
         let column = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(rawValue: "column"))
-        tableView.headerView = nil
         column.width = 1
         tableView.addTableColumn(column)
+        tableView.usesAlternatingRowBackgroundColors = true
+        tableView.rowSizeStyle = .large
+        tableView.headerView = nil
         scrollView.documentView = tableView
         tableView.snp.makeConstraints() { make in
             make.left.right.equalToSuperview()
             make.height.greaterThanOrEqualTo(100)
         }
         
-        view.addSubview(scrollView)
-        scrollView.snp.makeConstraints() { make in
-            make.top.left.right.equalToSuperview()
-        }
-        
+        let buttonBar = NSSegmentedControl()
         buttonBar.segmentStyle = .smallSquare
         buttonBar.segmentCount = 3
         buttonBar.trackingMode = .momentary
@@ -51,9 +48,5 @@ class TableActionView: NSViewController {
             make.left.equalToSuperview().offset(-1)
             make.top.equalTo(scrollView.snp.bottom)
         }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
