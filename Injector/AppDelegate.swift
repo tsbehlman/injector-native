@@ -12,6 +12,8 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         let window = NSWindow(contentViewController: InjectionManagerController())
+        window.tabbingMode = .disallowed
+        window.title = "Injector"
         window.makeKeyAndOrderFront(self)
     }
 }
