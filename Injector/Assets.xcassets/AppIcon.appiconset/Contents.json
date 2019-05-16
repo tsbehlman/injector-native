@@ -3,51 +3,61 @@
     {
       "idiom" : "mac",
       "size" : "16x16",
+      "filename" : "clover.png",
       "scale" : "1x"
     },
     {
       "idiom" : "mac",
       "size" : "16x16",
+      "filename" : "clover32.png",
       "scale" : "2x"
     },
     {
       "idiom" : "mac",
       "size" : "32x32",
+      "filename" : "clover32.png",
       "scale" : "1x"
     },
     {
       "idiom" : "mac",
       "size" : "32x32",
+      "filename" : "clover64.png",
       "scale" : "2x"
     },
     {
       "idiom" : "mac",
       "size" : "128x128",
+      "filename" : "clover128.png",
       "scale" : "1x"
     },
     {
       "idiom" : "mac",
       "size" : "128x128",
+      "filename" : "clover256.png",
       "scale" : "2x"
     },
     {
       "idiom" : "mac",
       "size" : "256x256",
+      "filename" : "clover256.png",
       "scale" : "1x"
     },
     {
       "idiom" : "mac",
       "size" : "256x256",
+      "filename" : "clover512.png",
       "scale" : "2x"
     },
     {
       "idiom" : "mac",
       "size" : "512x512",
+      "filename" : "clover512.png",
       "scale" : "1x"
     },
     {
       "idiom" : "mac",
       "size" : "512x512",
+      "filename" : "clover1024.png",
       "scale" : "2x"
     }
   ],
