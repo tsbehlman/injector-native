@@ -7,23 +7,14 @@
 //
 
 import Cocoa
-import SnapKit
+import WebKit
 
 class InjectionManagerController: NSViewController {
     override func loadView() {
-        let splitView = NSSplitView(frame: NSRect(x: 0, y: 0, width: 600, height: 400))
-        splitView.isVertical = true
-        splitView.dividerStyle = .thin
-        view = splitView
+        let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 400))
+        view = webView
         
-        let tableViewController = TableActionViewController()
-        addChild(tableViewController)
-        splitView.addSubview(tableViewController.view)
-        tableViewController.view.snp.makeConstraints { make in
-            make.width.greaterThanOrEqualTo(150).priority(500)
-            make.width.lessThanOrEqualTo(view).dividedBy(2).priority(500)
-        }
-        
-        splitView.addSubview(NSView())
+        let managerURL = Bundle.main.url(forResource: "index", withExtension: "html", subdirectory: "manager")!
+        webView.loadFileURL(managerURL, allowingReadAccessTo: managerURL)
     }
 }

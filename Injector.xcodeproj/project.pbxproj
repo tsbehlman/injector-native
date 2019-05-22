@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AB0CA9F2227FE50A00DF8972 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB0CA9F1227FE50A00DF8972 /* SnapKit.framework */; };
 		AB656CD7227F94570002D4DD /* Injector.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = AB656CD6227F94570002D4DD /* Injector.entitlements */; };
 		AB656CD9227F94570002D4DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB656CD8227F94570002D4DD /* AppDelegate.swift */; };
 		AB656CDE227F94570002D4DD /* InjectionManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB656CDD227F94570002D4DD /* InjectionManagerController.swift */; };
@@ -20,7 +19,6 @@
 		AB656CF7227F94590002D4DD /* script.js in Resources */ = {isa = PBXBuildFile; fileRef = AB656CF6227F94590002D4DD /* script.js */; };
 		AB656D0C227FA1F00002D4DD /* ToolbarItemIcon.pdf in Resources */ = {isa = PBXBuildFile; fileRef = AB656D0B227FA1F00002D4DD /* ToolbarItemIcon.pdf */; };
 		AB656D19227FDAF30002D4DD /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB656D18227FDAF30002D4DD /* Application.swift */; };
-		AB6AB74F22813D11000D3410 /* TableActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6AB74E22813D11000D3410 /* TableActionViewController.swift */; };
 		AB75D537228CE01E00DC18D5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB75D536228CE01E00DC18D5 /* MainMenu.xib */; };
 		AB75D556228CED0800DC18D5 /* InjectorSharedPersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB75D555228CED0800DC18D5 /* InjectorSharedPersistentContainer.swift */; };
 		AB75D559228CEE4B00DC18D5 /* Injector.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AB75D557228CEE4B00DC18D5 /* Injector.xcdatamodeld */; };
@@ -28,6 +26,7 @@
 		AB75D55B228CEF0200DC18D5 /* InjectorSharedPersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB75D555228CED0800DC18D5 /* InjectorSharedPersistentContainer.swift */; };
 		AB8087C322939DCA00F7CCE4 /* InjectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB8087C222939DCA00F7CCE4 /* InjectionManager.swift */; };
 		ABB3D3232293B912008F1767 /* InjectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB8087C222939DCA00F7CCE4 /* InjectionManager.swift */; };
+		ABB3D32B2294CDCB008F1767 /* manager in Resources */ = {isa = PBXBuildFile; fileRef = ABB3D32A2294CDCB008F1767 /* manager */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,7 +54,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		AB0CA9F1227FE50A00DF8972 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/Mac/SnapKit.framework; sourceTree = "<group>"; };
 		AB656CD3227F94570002D4DD /* Injector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Injector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB656CD6227F94570002D4DD /* Injector.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Injector.entitlements; sourceTree = "<group>"; };
 		AB656CD8227F94570002D4DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -72,11 +70,11 @@
 		AB656CFA227F94590002D4DD /* Injector_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Injector_Extension.entitlements; sourceTree = "<group>"; };
 		AB656D0B227FA1F00002D4DD /* ToolbarItemIcon.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = ToolbarItemIcon.pdf; sourceTree = "<group>"; };
 		AB656D18227FDAF30002D4DD /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
-		AB6AB74E22813D11000D3410 /* TableActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableActionViewController.swift; sourceTree = "<group>"; };
 		AB75D536228CE01E00DC18D5 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		AB75D555228CED0800DC18D5 /* InjectorSharedPersistentContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectorSharedPersistentContainer.swift; sourceTree = "<group>"; };
 		AB75D558228CEE4B00DC18D5 /* Injections.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Injections.xcdatamodel; sourceTree = "<group>"; };
 		AB8087C222939DCA00F7CCE4 /* InjectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectionManager.swift; sourceTree = "<group>"; };
+		ABB3D32A2294CDCB008F1767 /* manager */ = {isa = PBXFileReference; lastKnownFileType = folder; path = manager; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,7 +82,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB0CA9F2227FE50A00DF8972 /* SnapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,7 +104,6 @@
 				AB75D55C228CEF0D00DC18D5 /* Shared */,
 				AB656CEA227F94590002D4DD /* Frameworks */,
 				AB656CD4227F94570002D4DD /* Products */,
-				AB0CA9F1227FE50A00DF8972 /* SnapKit.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -123,10 +119,10 @@
 		AB656CD5227F94570002D4DD /* Injector */ = {
 			isa = PBXGroup;
 			children = (
+				ABB3D32A2294CDCB008F1767 /* manager */,
 				AB656CD6227F94570002D4DD /* Injector.entitlements */,
 				AB656CD8227F94570002D4DD /* AppDelegate.swift */,
 				AB656CDD227F94570002D4DD /* InjectionManagerController.swift */,
-				AB6AB74E22813D11000D3410 /* TableActionViewController.swift */,
 				AB656D18227FDAF30002D4DD /* Application.swift */,
 				AB656CDF227F94590002D4DD /* Assets.xcassets */,
 				AB656CE1227F94590002D4DD /* Info.plist */,
@@ -178,7 +174,6 @@
 				AB656CD0227F94570002D4DD /* Frameworks */,
 				AB656CD1227F94570002D4DD /* Resources */,
 				AB656D00227F94590002D4DD /* Embed App Extensions */,
-				AB656D0D227FCD070002D4DD /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -224,6 +219,9 @@
 							com.apple.ApplicationGroups.Mac = {
 								enabled = 1;
 							};
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
 						};
 					};
 					AB656CE5227F94590002D4DD = {
@@ -262,6 +260,7 @@
 			files = (
 				AB656CD7227F94570002D4DD /* Injector.entitlements in Resources */,
 				AB656CE0227F94590002D4DD /* Assets.xcassets in Resources */,
+				ABB3D32B2294CDCB008F1767 /* manager in Resources */,
 				AB75D537228CE01E00DC18D5 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -279,25 +278,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		AB656D0D227FCD070002D4DD /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/Mac/SnapKit.framework",
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SnapKit.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
-		};
 		AB656D11227FD5CD0002D4DD /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -323,7 +303,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB656D19227FDAF30002D4DD /* Application.swift in Sources */,
-				AB6AB74F22813D11000D3410 /* TableActionViewController.swift in Sources */,
 				AB75D559228CEE4B00DC18D5 /* Injector.xcdatamodeld in Sources */,
 				AB656CDE227F94570002D4DD /* InjectionManagerController.swift in Sources */,
 				AB656CD9227F94570002D4DD /* AppDelegate.swift in Sources */,
