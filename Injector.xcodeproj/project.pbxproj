@@ -27,6 +27,8 @@
 		AB8087C322939DCA00F7CCE4 /* InjectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB8087C222939DCA00F7CCE4 /* InjectionManager.swift */; };
 		ABB3D3232293B912008F1767 /* InjectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB8087C222939DCA00F7CCE4 /* InjectionManager.swift */; };
 		ABB3D32B2294CDCB008F1767 /* manager in Resources */ = {isa = PBXBuildFile; fileRef = ABB3D32A2294CDCB008F1767 /* manager */; };
+		ABB3D32D229C78AD008F1767 /* Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB3D32C229C78AD008F1767 /* Injection.swift */; };
+		ABB3D332229C9380008F1767 /* Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB3D32C229C78AD008F1767 /* Injection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +77,7 @@
 		AB75D558228CEE4B00DC18D5 /* Injections.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Injections.xcdatamodel; sourceTree = "<group>"; };
 		AB8087C222939DCA00F7CCE4 /* InjectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectionManager.swift; sourceTree = "<group>"; };
 		ABB3D32A2294CDCB008F1767 /* manager */ = {isa = PBXFileReference; lastKnownFileType = folder; path = manager; sourceTree = "<group>"; };
+		ABB3D32C229C78AD008F1767 /* Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +161,7 @@
 			children = (
 				AB75D555228CED0800DC18D5 /* InjectorSharedPersistentContainer.swift */,
 				AB8087C222939DCA00F7CCE4 /* InjectionManager.swift */,
+				ABB3D32C229C78AD008F1767 /* Injection.swift */,
 				AB75D557228CEE4B00DC18D5 /* Injector.xcdatamodeld */,
 			);
 			path = Shared;
@@ -302,6 +306,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABB3D32D229C78AD008F1767 /* Injection.swift in Sources */,
 				AB656D19227FDAF30002D4DD /* Application.swift in Sources */,
 				AB75D559228CEE4B00DC18D5 /* Injector.xcdatamodeld in Sources */,
 				AB656CDE227F94570002D4DD /* InjectionManagerController.swift in Sources */,
@@ -318,6 +323,7 @@
 				AB656CF1227F94590002D4DD /* SafariExtensionViewController.swift in Sources */,
 				AB656CEF227F94590002D4DD /* SafariExtensionHandler.swift in Sources */,
 				AB75D55A228CEEF900DC18D5 /* Injector.xcdatamodeld in Sources */,
+				ABB3D332229C9380008F1767 /* Injection.swift in Sources */,
 				AB75D55B228CEF0200DC18D5 /* InjectorSharedPersistentContainer.swift in Sources */,
 				ABB3D3232293B912008F1767 /* InjectionManager.swift in Sources */,
 			);

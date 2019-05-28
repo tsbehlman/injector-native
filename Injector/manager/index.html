@@ -28,8 +28,8 @@
 			<h2 id="title">New Injection</h1>
 			<form id="form">
 				<p>
-					<label for="enabled">Enabled</label>
-					<input name="enabled" id="enabled" type="checkbox" checked>
+					<label for="isEnabled">Enabled</label>
+					<input name="isEnabled" id="isEnabled" type="checkbox" checked>
 				</p>
 				<p>
 					<label for="name">Name</label>
@@ -73,9 +73,9 @@
 					<textarea name="script" id="script"></textarea>
 				</p>
 				<p>
-					<label for="onload">Run script on full load</label>
-					<select name="onload" id="onload">
-						<option value="0">Immediate execution</option>
+					<label for="scriptLoadBehavior">Script execution</label>
+					<select name="scriptLoadBehavior" id="scriptLoadBehavior">
+						<option value="0">Immediate</option>
 						<option value="1">On DOMContentLoaded</option>
 						<option value="2">On full load</option>
 					</select>

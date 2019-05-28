@@ -37,23 +37,28 @@ class InjectionManager {
     }()
     
     static var context = {
-        return InjectionManager.persistentContainer.viewContext
+        return persistentContainer.viewContext
     }()
     
     static var injectionEntity = {
-        return NSEntityDescription.entity(forEntityName: "Injection", in: InjectionManager.context)
+        return NSEntityDescription.entity(forEntityName: "Injection", in: context)!
     }()
     
-    open class func getInjections() -> [NSManagedObject] {
+    open class func getInjections() -> [Injection] {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Injection")
         
         do {
-            let result = try InjectionManager.context.fetch(request)
-            return result as! [NSManagedObject]
+            let result = try context.fetch(request)
+            return result as! [Injection]
         } catch {
             print("InjectionManager failed to list injections")
         }
         
         return []
+    }
+    
+    open class func getInjection(_ id: String) throws -> Injection {
+        let objectID = context.persistentStoreCoordinator!.managedObjectID(forURIRepresentation: URL(string: id)!)!
+        return try context.existingObject(with: objectID) as! Injection
     }
 }
