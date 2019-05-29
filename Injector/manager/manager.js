@@ -245,6 +245,10 @@
 				createItem( key, data );
 			} );
 			break;
+		case "select":
+			markSelection( list.querySelector( `[data-id="${event.id}"]` ) );
+			bindEditForm( event.id );
+			break;
 		}
 	}
 	

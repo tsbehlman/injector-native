@@ -40,9 +40,11 @@ class InjectionManagerController: NSViewController, WKScriptMessageHandler {
     }
     
     func createInjection(_ data: [String: Any]) throws {
-        let _ = Injection(from: data)
+        let injection = Injection(from: data)
         try InjectionManager.context.save()
         try retrieveInjections()
+        let id = injection.objectID.uriRepresentation().absoluteString
+        webView!.evaluateJavaScript("handleMessage({action:\"select\",id:\"\(id)\"})")
     }
     
     func updateInjection(_ id: String, withData data: [String: Any]) throws {
