@@ -83,13 +83,16 @@
  * Top levels
 \* * * * * * * */
 
-html {
+html, body {
 	height: 100%;
+	overflow: hidden;
+}
+
+html {
 	-webkit-user-select: none;
 }
 
 body {
-	height: 100%;
 	display: -webkit-flex;
 	margin: 0;
 	font-family: -apple-system;
