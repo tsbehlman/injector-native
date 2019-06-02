@@ -9,7 +9,7 @@
 import CoreData
 
 @objc(Injection)
-final class Injection: NSManagedObject, Encodable {
+final class Injection: NSManagedObject {
     @NSManaged var isEnabled: Bool
     @NSManaged var name: String
     @NSManaged var includes: [String]
@@ -17,17 +17,6 @@ final class Injection: NSManagedObject, Encodable {
     @NSManaged var styles: String
     @NSManaged var script: String
     @NSManaged var scriptLoadBehavior: Int16
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case isEnabled
-        case name
-        case includes
-        case excludes
-        case styles
-        case script
-        case scriptLoadBehavior
-    }
     
     convenience init(from values: [String: Any]) {
         self.init(entity: InjectionManager.injectionEntity, insertInto: InjectionManager.context)
@@ -44,28 +33,17 @@ final class Injection: NSManagedObject, Encodable {
         scriptLoadBehavior = values["scriptLoadBehavior"] as! Int16
     }
     
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.objectID.uriRepresentation().absoluteString, forKey: .id)
-        try container.encode(isEnabled, forKey: .isEnabled)
-        try container.encode(name, forKey: .name)
-        try container.encode(includes, forKey: .includes)
-        try container.encode(excludes, forKey: .excludes)
-        try container.encode(styles, forKey: .styles)
-        try container.encode(script, forKey: .script)
-        try container.encode(scriptLoadBehavior, forKey: .scriptLoadBehavior)
+    public func toDictionary() -> [String: Any] {
+        var values = [String: Any]()
+        values["id"] = self.objectID.uriRepresentation().absoluteString
+        values["isEnabled"] = isEnabled
+        values["name"] = name
+        values["includes"] = includes
+        values["excludes"] = excludes
+        values["styles"] = styles
+        values["script"] = script
+        values["scriptLoadBehavior"] = scriptLoadBehavior
+        return values
     }
     
-    public func toDictionary() -> [String: Any] {
-        var dict = [String: Any]()
-        dict[CodingKeys.id.stringValue] = self.objectID.uriRepresentation().absoluteString
-        dict[CodingKeys.isEnabled.stringValue] = isEnabled
-        dict[CodingKeys.name.stringValue] = name
-        dict[CodingKeys.includes.stringValue] = includes
-        dict[CodingKeys.excludes.stringValue] = excludes
-        dict[CodingKeys.styles.stringValue] = styles
-        dict[CodingKeys.script.stringValue] = script
-        dict[CodingKeys.scriptLoadBehavior.stringValue] = scriptLoadBehavior
-        return dict
-    }
 }
