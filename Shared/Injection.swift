@@ -55,4 +55,17 @@ final class Injection: NSManagedObject, Encodable {
         try container.encode(script, forKey: .script)
         try container.encode(scriptLoadBehavior, forKey: .scriptLoadBehavior)
     }
+    
+    public func toDictionary() -> [String: Any] {
+        var dict = [String: Any]()
+        dict[CodingKeys.id.stringValue] = self.objectID.uriRepresentation().absoluteString
+        dict[CodingKeys.isEnabled.stringValue] = isEnabled
+        dict[CodingKeys.name.stringValue] = name
+        dict[CodingKeys.includes.stringValue] = includes
+        dict[CodingKeys.excludes.stringValue] = excludes
+        dict[CodingKeys.styles.stringValue] = styles
+        dict[CodingKeys.script.stringValue] = script
+        dict[CodingKeys.scriptLoadBehavior.stringValue] = scriptLoadBehavior
+        return dict
+    }
 }
