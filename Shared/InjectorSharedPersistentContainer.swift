@@ -10,7 +10,6 @@ import CoreData
 
 class InjectorSharedPersistentContainer: NSPersistentContainer {
     override open class func defaultDirectoryURL() -> URL {
-        let storeURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-        return storeURL.appendingPathComponent("Injector")
+        return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "com.tbehlman.Injector")!
     }
 }
