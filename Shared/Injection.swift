@@ -46,4 +46,37 @@ final class Injection: NSManagedObject {
         return values
     }
     
+    public func matchesURL(_ url: URL) -> Bool {
+        return matchesURL(url, using: includes) && !matchesURL(url, using: excludes)
+    }
+    
+    fileprivate func matchesURL(_ url: URL, using patterns: [String]) -> Bool {
+        for pattern in patterns {
+            let escapedPattern = NSRegularExpression.escapedPattern(for: pattern)
+            let patternRegex = try! escapedPattern.replacing(pattern: #"(?<!\\)\\[*?]"#) { 
+                if $0 == "\\*" {
+                    return ".*?"
+                } else if $0 == "\\?" {
+                    return "?"
+                } else {
+                    return $0
+                }
+            }
+            if normalizeURL(url).absoluteString.matches(pattern: patternRegex) {
+                return true
+            }
+        }
+        return false;
+    }
+}
+
+func normalizeURL(_ url: URL) -> URL {
+    var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
+    if components.host!.starts(with: "www.") {
+        components.host = components.host![4..<components.host!.count]
+    }
+    if components.path.count == 0 {
+        components.path = "/"
+    }
+    return components.url!
 }
