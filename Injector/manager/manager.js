@@ -143,6 +143,7 @@
 		} );
 		
 		list.appendChild( item );
+		return item;
 	}
 	
 	function markSelection( element ) {
@@ -237,17 +238,15 @@
 	window.handleMessage = function( event ) {
 		switch( event.action ) {
 		case "retrieve":
-			while( list.firstChild ) {
-				list.removeChild( list.firstChild );
-			}
 			styleCache = new Map( event.payload.map( injection => [ injection.id, injection ] ) );
 			styleCache.forEach( function( data, key ) {
 				createItem( key, data );
 			} );
 			break;
-		case "select":
-			markSelection( list.querySelector( `[data-id="${event.id}"]` ) );
-			bindEditForm( event.id );
+		case "create":
+			styleCache.set( event.payload.id, event.payload );
+			markSelection( createItem( event.payload.id, event.payload ) );
+			bindEditForm( event.payload.id );
 			break;
 		}
 	}
