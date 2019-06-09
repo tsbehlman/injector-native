@@ -1,4 +1,4 @@
-(function() {
+( function() {
 	"use strict";
 	
 	// DOM elements
@@ -122,6 +122,11 @@
 		for( const input of [ form.isEnabled, form.scriptLoadBehavior ] ) {
 			input.addEventListener( "change", enableSave, false );
 		}
+		
+		addKeyboardShortcut( "s", META, e => {
+			e.preventDefault();
+			form.save.click();
+		} );
 		
 		newLink.click();
 	}
