@@ -89,6 +89,10 @@
 		} );
 	}
 	
+	function enableSave() {
+		form.save.disabled = false;
+	}
+	
 	// Manager application
 	function start() {
 		list = document.getElementById( "list" );
@@ -110,6 +114,14 @@
 		excludeLabel.addEventListener( "click", clickLabel, false );
 		cssLabel.addEventListener( "click", clickLabel, false );
 		jsLabel.addEventListener( "click", clickLabel, false );
+		
+		for( const input of [ form.name, form.includes, form.excludes, form.styles, form.script ] ) {
+			input.addEventListener( "input", enableSave, false );
+		}
+		
+		for( const input of [ form.isEnabled, form.scriptLoadBehavior ] ) {
+			input.addEventListener( "change", enableSave, false );
+		}
 		
 		newLink.click();
 	}
@@ -185,6 +197,7 @@
 	}
 	
 	function populateForm( data ) {
+		form.save.disabled = true;
 		form.isEnabled.checked = data.isEnabled;
 		form.name.value = data.name || "";
 		form.includes.value = data.includes.join( "\n" );
