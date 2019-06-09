@@ -24,28 +24,30 @@
 				</button>
 			</div>
 		</aside>
-		<section>
-			<h2 id="title">New Injection</h1>
-			<form id="form">
+		<form id="form">
+			<h2 id="title">
+				New Injection
+				<button>Save</button>
+			</h2>
+			<section>
+				<label>
+					Enabled<input name="isEnabled" id="isEnabled" type="checkbox" checked>
+				</label>
+				<label for="name">
+					Name<input name="name" id="name" type="text" placeholder="Untitled">
+				</label>
 				<p>
-					<label for="isEnabled">Enabled</label>
-					<input name="isEnabled" id="isEnabled" type="checkbox" checked>
-				</p>
-				<p>
-					<label for="name">Name</label>
-					<input name="name" id="name" type="text" placeholder="Untitled">
-				</p>
-				<p>
-					<label for="includes">URLs</label>
-					<span class="label" id="label-includes">
+					<label class="collapsible" id="label-includes" for="includes">
 						<svg viewBox="0 0 7 8"><path d="M0 0v7L6 3.5z"/></svg>
 						Includes
-					</span>
+					</label>
 					<textarea name="includes" id="includes" placeholder="*"></textarea>
-					<span class="label hidden" id="label-excludes">
+				</p>
+				<p>
+					<label class="collapsible hidden" id="label-excludes" for="excludes">
 						<svg viewBox="0 0 7 8"><path d="M0 0v7L6 3.5z"/></svg>
 						Excludes
-					</span>
+					</label>
 					<textarea name="excludes" id="excludes"></textarea>
 					<span class="description">
 						One rule per line. Use * for wildcard.
@@ -53,37 +55,31 @@
 					</span>
 				</p>
 				<p>
-					<label for="styles">Styles</label>
-					<span class="label" id="label-css">
+					<label class="collapsible" id="label-css" for="styles">
 						<svg viewBox="0 0 7 8"><path d="M0 0v7L6 3.5z"/></svg>
 						CSS
-					</span>
+					</label>
 					<textarea name="styles" id="styles"></textarea>
-					<span class="description">
+					<label class="description">
 						To override page style, put <strong>!important</strong>
 						at the end of each style.
 					</span>
 				</p>
 				<p>
-					<label for="script">Script</label>
-					<span class="label" id="label-js">
+					<label class="collapsible" id="label-js" for="script">
 						<svg viewBox="0 0 7 8"><path d="M0 0v7L6 3.5z"/></svg>
 						JavaScript
-					</span>
+					</label>
 					<textarea name="script" id="script"></textarea>
 				</p>
-				<p>
-					<label for="scriptLoadBehavior">Script execution</label>
-					<select name="scriptLoadBehavior" id="scriptLoadBehavior">
+				<label>
+					Script execution<select name="scriptLoadBehavior" id="scriptLoadBehavior">
 						<option value="0">Immediate</option>
 						<option value="1">On DOMContentLoaded</option>
 						<option value="2">On full load</option>
 					</select>
-				</p>
-				<p>
-					<input name="save" type="submit" value="Save">
-				</p>
-			</form>
-		</section>
+				</label>
+			</section>
+		</form>
 	</body>
 </html>

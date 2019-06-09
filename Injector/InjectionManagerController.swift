@@ -68,7 +68,7 @@ class InjectionManagerController: NSViewController, WKScriptMessageHandler {
         config.userContentController = contentController
         config.preferences.setValue(true, forKey: "developerExtrasEnabled")
         
-        webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 400), configuration: config)
+        webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 800, height: 500), configuration: config)
         view = webView!
         
         let managerURL = Bundle.main.url(forResource: "index", withExtension: "html", subdirectory: "manager")!
