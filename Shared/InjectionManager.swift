@@ -57,6 +57,20 @@ class InjectionManager {
         return []
     }
     
+    open class func getEnabledInjections() -> [Injection] {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Injection")
+        request.predicate = NSPredicate(format: "isEnabled == true")
+        
+        do {
+            let result = try context.fetch(request)
+            return result as! [Injection]
+        } catch {
+            print("InjectionManager failed to list injections")
+        }
+        
+        return []
+    }
+    
     open class func getInjection(_ id: String) throws -> Injection {
         let objectID = context.persistentStoreCoordinator!.managedObjectID(forURIRepresentation: URL(string: id)!)!
         return try context.existingObject(with: objectID) as! Injection

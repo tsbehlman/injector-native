@@ -14,8 +14,8 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         if messageName == "update" {
             page.getPropertiesWithCompletionHandler { properties in
                 guard let url = properties?.url else { return }
-                let injections = InjectionManager.getInjections()
-                    .filter { $0.isEnabled && $0.matchesURL(url) }
+                let injections = InjectionManager.getEnabledInjections()
+                    .filter { $0.matchesURL(url) }
                     .map { $0.toDictionary() }
                 page.dispatchMessageToScript(withName: "update", userInfo: ["injections": injections])
             }
