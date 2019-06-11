@@ -12,14 +12,10 @@
 	const cssLabel = document.getElementById( "label-css" );
 	const jsLabel = document.getElementById( "label-js" );
 	
-	const injections = new Map();
+	const injectionsById = new Map();
 	let selectedListItem = newLink;
 	
 	bindNewForm();
-	
-	window.webkit && webkit.messageHandlers.injector.postMessage( {
-		action: "retrieve"
-	} );
 	
 	newLink.addEventListener( "click", event => {
 		if( newLink !== selectedListItem ) {
@@ -43,7 +39,7 @@
 			newLink
 		).click();
 		
-		injections.delete( event.message );
+		injectionsById.delete( event.message );
 		list.removeChild( listItem );
 		deleteInjection( listItem.dataset.id );
 	}, false );
@@ -192,12 +188,12 @@
 	}
 	
 	function bindEditForm( id ) {
-		const injection = injections.get( id );
+		const injection = injectionsById.get( id );
 		setTitle( injection.name );
 		setLabelState( injection.includes.length, injection.excludes.length, injection.styles.length, injection.script.length );
 		bindForm( injection, function( injection ) {
 			updateInjection( id, injection );
-			injections.set( id, injection );
+			injectionsById.set( id, injection );
 			
 			// Always update display
 			setTitle( injection.name );
@@ -218,19 +214,16 @@
 		bindForm( { isEnabled: true, includes: [], excludes: [], scriptLoadBehavior: 0 }, createInjection );
 	}
 	
-	window.handleMessage = function( event ) {
-		switch( event.action ) {
-		case "retrieve":
-			for( const injection of event.payload ) {
-				injections.set( injection.id, injection );
-				createListItem( injection.id, injection );
-			}
-			break;
-		case "create":
-			injections.set( event.payload.id, event.payload );
-			selectListItem( createListItem( event.payload.id, event.payload ) );
-			bindEditForm( event.payload.id );
-			break;
+	window.injectionWasCreated = function( injection ) {
+		injectionsById.set( injection.id, injection );
+		selectListItem( createListItem( injection.id, injection ) );
+		bindEditForm( injection.id );
+	};
+	
+	injectionPromise.then( injections => {
+		for( const injection of injections ) {
+			injectionsById.set( injection.id, injection );
+			createListItem( injection.id, injection );
 		}
-	}
+	} );
 } )();

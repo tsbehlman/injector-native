@@ -3,6 +3,19 @@
 	<head>
 		<title>Injector</title>
 		<meta charset="utf-8">
+		<script>
+			window.injectionPromise = new Promise( ( resolve, reject ) => {
+				window.hasLoadedInjections = injections => {
+					window.injectionPromise = undefined;
+					window.hasLoadedInjections = undefined;
+					resolve( injections );
+				}
+			} );
+			
+			window.webkit && webkit.messageHandlers.injector.postMessage( {
+				action: "retrieve"
+			} );
+		</script>
 		<link rel="stylesheet" href="manager.css">
 		<script src="keyboard.js"></script>
 	</head>

@@ -35,17 +35,15 @@ class InjectionManagerController: NSViewController, WKScriptMessageHandler {
     
     func retrieveInjections() throws {
         let injections = InjectionManager.getInjections().map { $0.toDictionary() }
-        let message = ["action": "retrieve", "payload": injections] as [String : Any]
-        let json = String(data: try JSONSerialization.data(withJSONObject: message, options: []), encoding: .utf8)!
-        webView!.evaluateJavaScript("handleMessage(\(json))")
+        let json = String(data: try JSONSerialization.data(withJSONObject: injections, options: []), encoding: .utf8)!
+        webView!.evaluateJavaScript("hasLoadedInjections(\(json))")
     }
     
     func createInjection(_ data: [String: Any]) throws {
         let injection = Injection(from: data)
         try InjectionManager.context.save()
-        let message = ["action": "create", "payload": injection.toDictionary()] as [String : Any]
-        let json = String(data: try JSONSerialization.data(withJSONObject: message, options: []), encoding: .utf8)!
-        webView!.evaluateJavaScript("handleMessage(\(json))")
+        let json = String(data: try JSONSerialization.data(withJSONObject: injection.toDictionary(), options: []), encoding: .utf8)!
+        webView!.evaluateJavaScript("injectionWasCreated(\(json))")
     }
     
     func updateInjection(_ id: String, withData data: [String: Any]) throws {
