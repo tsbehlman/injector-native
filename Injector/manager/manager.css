@@ -38,7 +38,7 @@
 	color: #888;
 }
 
-#list > a.selection {
+#list > a.selected {
 	color: #fff;
 	background-color: #006bd2;
 }

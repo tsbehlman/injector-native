@@ -2,45 +2,69 @@
 	"use strict";
 	
 	// DOM elements
-	let list,
-		form,
-		title,
-		newLink,
-		deleteLink,
-		includeLabel,
-		excludeLabel,
-		cssLabel,
-		jsLabel;
+	const list = document.getElementById( "list" );
+	const form = document.getElementById( "form" );
+	const title = document.getElementById( "title" ).firstChild;
+	const newLink = document.getElementById( "new" );
+	const deleteLink = document.getElementById( "delete" );
+	const includeLabel = document.getElementById( "label-includes" );
+	const excludeLabel = document.getElementById( "label-excludes" );
+	const cssLabel = document.getElementById( "label-css" );
+	const jsLabel = document.getElementById( "label-js" );
 	
-	// The currently selected list item
-	let selection = null;
+	const injections = new Map();
+	let selectedListItem = newLink;
 	
-	let styleCache;
+	bindNewForm();
 	
-	function newLinkHandler( event ) {
-		if( this !== selection ) {
-			clearSelection();
+	window.webkit && webkit.messageHandlers.injector.postMessage( {
+		action: "retrieve"
+	} );
+	
+	newLink.addEventListener( "click", event => {
+		if( newLink !== selectedListItem ) {
+			selectedListItem.classList.remove( "selected" );
+			selectedListItem = newLink;
+			deleteLink.disabled = true;
 			bindNewForm();
 		}
-	}
+	}, false );
 	
-	function deleteLinkHandler( event ) {
-		if( selection === null || selection === newLink ) {
+	deleteLink.addEventListener( "click", event => {
+		if( selectedListItem === newLink ) {
 			return;
 		}
 		
-		const element = selection;
+		const listItem = selectedListItem;
 		
 		(
-			element.nextElementSibling ||
-			element.previousElementSibling ||
+			listItem.nextElementSibling ||
+			listItem.previousElementSibling ||
 			newLink
 		).click();
 		
-		styleCache.delete( event.message );
-		list.removeChild( element );
-		deleteInjection( element.dataset.id );
+		injections.delete( event.message );
+		list.removeChild( listItem );
+		deleteInjection( listItem.dataset.id );
+	}, false );
+	
+	includeLabel.addEventListener( "click", clickLabel, false );
+	excludeLabel.addEventListener( "click", clickLabel, false );
+	cssLabel.addEventListener( "click", clickLabel, false );
+	jsLabel.addEventListener( "click", clickLabel, false );
+	
+	for( const input of [ form.name, form.includes, form.excludes, form.styles, form.script ] ) {
+		input.addEventListener( "input", enableSave, false );
 	}
+	
+	for( const input of [ form.isEnabled, form.scriptLoadBehavior ] ) {
+		input.addEventListener( "change", enableSave, false );
+	}
+	
+	addKeyboardShortcut( "s", META, e => {
+		e.preventDefault();
+		form.save.click();
+	} );
 	
 	function hideLabel( label ) {
 		label.classList.add( "hidden" );
@@ -51,20 +75,11 @@
 	}
 	
 	function clickLabel() {
-		if( this.classList.contains( "hidden" ) ) {
-			showLabel( this );
-			this.nextElementSibling.focus();
-		}
-		else {
-			hideLabel( this );
-		}
+		( this.classList.contains( "hidden" ) ? showLabel : hideLabel )( this );
 	}
 	
-	// Style storage
-	function retrieveInjections() {
-		webkit.messageHandlers.injector.postMessage( {
-			action: "retrieve"
-		} );
+	function enableSave() {
+		form.save.disabled = false;
 	}
 	
 	function deleteInjection( id ) {
@@ -89,48 +104,6 @@
 		} );
 	}
 	
-	function enableSave() {
-		form.save.disabled = false;
-	}
-	
-	// Manager application
-	function start() {
-		list = document.getElementById( "list" );
-		form = document.getElementById( "form" );
-		title = document.getElementById( "title" ).firstChild;
-		newLink = document.getElementById( "new" );
-		deleteLink = document.getElementById( "delete" );
-		includeLabel = document.getElementById( "label-includes" );
-		excludeLabel = document.getElementById( "label-excludes" );
-		cssLabel = document.getElementById( "label-css" );
-		jsLabel = document.getElementById( "label-js" );
-		
-		retrieveInjections();
-		
-		newLink.addEventListener( "click", newLinkHandler, false );
-		deleteLink.addEventListener( "click", deleteLinkHandler, false );
-		
-		includeLabel.addEventListener( "click", clickLabel, false );
-		excludeLabel.addEventListener( "click", clickLabel, false );
-		cssLabel.addEventListener( "click", clickLabel, false );
-		jsLabel.addEventListener( "click", clickLabel, false );
-		
-		for( const input of [ form.name, form.includes, form.excludes, form.styles, form.script ] ) {
-			input.addEventListener( "input", enableSave, false );
-		}
-		
-		for( const input of [ form.isEnabled, form.scriptLoadBehavior ] ) {
-			input.addEventListener( "change", enableSave, false );
-		}
-		
-		addKeyboardShortcut( "s", META, e => {
-			e.preventDefault();
-			form.save.click();
-		} );
-		
-		newLink.click();
-	}
-	
 	function setTitle( newTitle ) {
 		title.nodeValue = newTitle;
 	}
@@ -142,20 +115,20 @@
 		( script ? showLabel : hideLabel )( jsLabel );
 	}
 	
-	function createItem( key, data ) {
+	function createListItem( id, injection ) {
 		const item = document.createElement( "a" );
 		
-		item.dataset.id = key;
+		item.dataset.id = id;
 		
-		if( !data.isEnabled ) {
+		if( !injection.isEnabled ) {
 			item.className = "disabled";
 		}
 		item.href = "#";
-		item.textContent = data.name;
+		item.textContent = injection.name;
 		item.addEventListener( "click", function( e ) {
-			if( this !== selection ) {
-				markSelection( this );
-				bindEditForm( this.dataset.id );
+			if( item !== selectedListItem ) {
+				selectListItem( item );
+				bindEditForm( item.dataset.id );
 			}
 		} );
 		
@@ -163,62 +136,54 @@
 		return item;
 	}
 	
-	function markSelection( element ) {
-		if( element !== selection ) {
-			if( selection === null ) {
+	function selectListItem( item ) {
+		if( item !== selectedListItem ) {
+			if( selectedListItem === newLink ) {
 				deleteLink.disabled = false;
 			}
 			else {
-				selection.classList.remove( "selection" );
+				selectedListItem.classList.remove( "selected" );
 			}
 			
-			element.classList.add( "selection" );
-			selection = element;
+			item.classList.add( "selected" );
+			selectedListItem = item;
 		}
-	}
-	
-	function clearSelection() {
-		if( selection !== null ) {
-			selection.classList.remove( "selection" );
-			selection = null;
-		}
-		deleteLink.disabled = true;
 	}
 	
 	function constructDataFromForm() {
 		const name = form.name.value,
 			includes = form.includes.value,
 			excludes = form.excludes.value,
-			data = {};
+			injection = {};
 			
-		data.isEnabled = form.isEnabled.checked;
-		data.name = name.length ? name : "Untitled Injection";
-		data.includes = includes.length ? includes.split( "\n" ) : [ "*" ];
-		data.excludes = excludes.length ? excludes.split( "\n" ) : [];
-		data.styles = form.styles.value;
-		data.script = form.script.value;
-		data.scriptLoadBehavior = Number( form.scriptLoadBehavior.value );
-		return data;
+		injection.isEnabled = form.isEnabled.checked;
+		injection.name = name.length ? name : "Untitled Injection";
+		injection.includes = includes.length ? includes.split( "\n" ) : [ "*" ];
+		injection.excludes = excludes.length ? excludes.split( "\n" ) : [];
+		injection.styles = form.styles.value;
+		injection.script = form.script.value;
+		injection.scriptLoadBehavior = Number( form.scriptLoadBehavior.value );
+		return injection;
 	}
 	
-	function populateForm( data ) {
+	function populateForm( injection ) {
 		form.save.disabled = true;
-		form.isEnabled.checked = data.isEnabled;
-		form.name.value = data.name || "";
-		form.includes.value = data.includes.join( "\n" );
-		form.excludes.value = data.excludes.join( "\n" );
-		form.styles.value = data.styles || "";
-		form.script.value = data.script || "";
-		form.scriptLoadBehavior.value = String( data.scriptLoadBehavior );
+		form.isEnabled.checked = injection.isEnabled;
+		form.name.value = injection.name || "";
+		form.includes.value = injection.includes.join( "\n" );
+		form.excludes.value = injection.excludes.join( "\n" );
+		form.styles.value = injection.styles || "";
+		form.script.value = injection.script || "";
+		form.scriptLoadBehavior.value = String( injection.scriptLoadBehavior );
 	}
 	
-	function bindForm( data, callback ) {
-		populateForm( data );
+	function bindForm( injection, callback ) {
+		populateForm( injection );
 		
 		form.onsubmit = function( e ) {
-			const formData = constructDataFromForm();
-			populateForm( formData );
-			callback( formData );
+			const injection = constructDataFromForm();
+			populateForm( injection );
+			callback( injection );
 			
 			// Don't refresh the page
 			e.preventDefault();
@@ -226,23 +191,23 @@
 		};
 	}
 	
-	function bindEditForm( key ) {
-		const data = styleCache.get( key );
-		setTitle( data.name );
-		setLabelState( data.includes.length, data.excludes.length, data.styles.length, data.script.length );
-		bindForm( data, function( formData ) {
-			updateInjection( key, formData );
-			styleCache.set( key, formData );
+	function bindEditForm( id ) {
+		const injection = injections.get( id );
+		setTitle( injection.name );
+		setLabelState( injection.includes.length, injection.excludes.length, injection.styles.length, injection.script.length );
+		bindForm( injection, function( injection ) {
+			updateInjection( id, injection );
+			injections.set( id, injection );
 			
 			// Always update display
-			setTitle( formData.name );
-			selection.firstChild.nodeValue = formData.name;
+			setTitle( injection.name );
+			selectedListItem.firstChild.nodeValue = injection.name;
 			
-			if( formData.isEnabled ) {
-				selection.classList.remove( "disabled" );
+			if( injection.isEnabled ) {
+				selectedListItem.classList.remove( "disabled" );
 			}
 			else {
-				selection.classList.add( "disabled" );
+				selectedListItem.classList.add( "disabled" );
 			}
 		});
 	}
@@ -256,18 +221,16 @@
 	window.handleMessage = function( event ) {
 		switch( event.action ) {
 		case "retrieve":
-			styleCache = new Map( event.payload.map( injection => [ injection.id, injection ] ) );
-			styleCache.forEach( function( data, key ) {
-				createItem( key, data );
-			} );
+			for( const injection of event.payload ) {
+				injections.set( injection.id, injection );
+				createListItem( injection.id, injection );
+			}
 			break;
 		case "create":
-			styleCache.set( event.payload.id, event.payload );
-			markSelection( createItem( event.payload.id, event.payload ) );
+			injections.set( event.payload.id, event.payload );
+			selectListItem( createListItem( event.payload.id, event.payload ) );
 			bindEditForm( event.payload.id );
 			break;
 		}
 	}
-	
-	window.addEventListener( "DOMContentLoaded", start, false );
 } )();

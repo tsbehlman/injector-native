@@ -4,7 +4,6 @@
 		<title>Injector</title>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="manager.css">
-		<script src="manager.js"></script>
 		<script src="keyboard.js"></script>
 	</head>
 	<body>
@@ -14,11 +13,11 @@
 				</div>
 			</div>
 			<div id="list-control">
-				<button id="new" href="#new">
+				<button id="new">
 					<svg viewBox="0 0 11 11">
 						<path d="M0 5.5h11M5.5 0v11"/>
 					</svg>
-				</button><button id="delete" href="#delete">
+				</button><button id="delete" disabled>
 					<svg viewBox="0 0 11 11">
 						<path d="M0 5.5h11"/>
 					</svg>
@@ -86,5 +85,6 @@
 				</label>
 			</section>
 		</form>
+		<script src="manager.js"></script>
 	</body>
 </html>
