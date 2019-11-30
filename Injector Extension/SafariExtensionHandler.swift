@@ -12,13 +12,23 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     
     override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String : Any]?) {
         if messageName == "update" {
-            page.getPropertiesWithCompletionHandler { properties in
-                guard let url = properties?.url else { return }
-                let injections = InjectionManager.getEnabledInjections()
-                    .filter { $0.matchesURL(url) }
-                    .map { $0.toDictionary() }
-                page.dispatchMessageToScript(withName: "update", userInfo: ["injections": injections])
+            let injections = InjectionManager.getEnabledInjections()
+            update(page: page, withInjections: injections)
+        }
+    }
+    
+    fileprivate func update(page: SFSafariPage, withInjections injections: [Injection]) {
+        page.getPropertiesWithCompletionHandler { properties in
+            guard let url = properties?.url else { return }
+            let applicableInjections = injections
+                .filter { $0.matchesURL(url) }
+            if applicableInjections.isEmpty {
+                return
             }
+            let userInfo = ["injections": applicableInjections
+                .map { $0.toDictionary() }
+            ]
+            page.dispatchMessageToScript(withName: "update", userInfo: userInfo)
         }
     }
     
