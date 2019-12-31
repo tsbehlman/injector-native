@@ -11,25 +11,30 @@
 	async function updateInjections( injections ) {
 		await injectionPromise;
 		
-		for( const element of injectedElements ) {
-			document.head.removeChild( element );
+		for( const injectedElement of injectedElements ) {
+			document.head.removeChild( injectedElement );
 		}
 		
 		injectedElements = [];
 		let promises = [];
 		
 		for( const injection of injections ) {
-			const style = document.createElement( "style" );
-			const script = document.createElement( "script" );
-			style.dataset.injection = injection.name;
-			script.dataset.injection = injection.name;
-			injectedElements.push( style, script );
-			style.appendChild( document.createTextNode( injection.styles ) );
-			script.appendChild( document.createTextNode( wrapScriptInIIFE( injection.name, injection.script ) ) );
-			document.head.appendChild( style );
-			promises.push( scriptLoadPromises[ injection.scriptLoadBehavior ].then( () => {
-				document.head.appendChild( script );
-			} ) );
+			if( injection.styles ) {
+				const style = document.createElement( "style" );
+				style.dataset.injection = injection.name;
+				injectedElements.push( style );
+				style.appendChild( document.createTextNode( injection.styles ) );
+				document.head.appendChild( style );
+			}
+			if( injection.script ) {
+				const script = document.createElement( "script" );
+				script.dataset.injection = injection.name;
+				injectedElements.push( script );
+				script.appendChild( document.createTextNode( wrapScriptInIIFE( injection.name, inject
+				promises.push( scriptLoadPromises[ injection.scriptLoadBehavior ].then( () => {
+					document.head.appendChild( script );
+				} ) );
+			}
 		}
 		
 		injectionPromise = Promise.all( promises );
