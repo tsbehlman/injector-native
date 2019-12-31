@@ -30,38 +30,36 @@
 				const script = document.createElement( "script" );
 				script.dataset.injection = injection.name;
 				injectedElements.push( script );
-				script.appendChild( document.createTextNode( wrapScriptInIIFE( injection.name, inject
+				script.appendChild( document.createTextNode( wrapScriptInIIFE( injection.name, injection.script ) ) );
 				promises.push( scriptLoadPromises[ injection.scriptLoadBehavior ].then( () => {
 					document.head.appendChild( script );
 				} ) );
 			}
 		}
 		
-		injectionPromise = Promise.all( promises );
+		await Promise.all( promises );
+	}
+	
+	function listenForOneEvent( element, event, useCapture ) {
+		return new Promise( function( resolve ) {
+			const handler = e => {
+				element.removeEventListener( event, handler, useCapture );
+				resolve();
+			};
+			element.addEventListener( event, handler, useCapture );
+		} )
 	}
 	
 	const scriptLoadPromises = [
 		Promise.resolve(),
-		new Promise( resolve => {
-			const handler = e => {
-				document.removeEventListener( "DOMContentLoaded", handler, false );
-				resolve();
-			};
-			document.addEventListener( "DOMContentLoaded", handler, false );
-		} ),
-		new Promise( resolve => {
-			const handler = e => {
-				document.removeEventListener( "load", handler, false );
-				resolve();
-			};
-			document.addEventListener( "load", handler, false );
-		} )
+		document.readyState !== "loading" ? Promise.resolve() : listenForOneEvent( document, "DOMContentLoaded", false ),
+		document.readyState === "complete" ? Promise.resolve() : listenForOneEvent( document, "load", false ),
 	];
 	
 	safari.self.addEventListener( "message", event => {
 		switch( event.name ) {
 		case "update":
-			updateInjections( event.message.injections );
+			injectionPromise = updateInjections( event.message.injections );
 			break;
 		}
 	} );
