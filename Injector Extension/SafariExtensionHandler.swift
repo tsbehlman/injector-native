@@ -10,10 +10,39 @@ import SafariServices
 
 class SafariExtensionHandler: SFSafariExtensionHandler {
     
+    override init() {
+        super.init()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateAllPages),
+            name: NSNotification.Name(
+                rawValue: "NSPersistentStoreRemoteChangeNotification"), 
+            object: InjectionManager.persistentContainer.persistentStoreCoordinator
+        )
+    }
+    
     override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String : Any]?) {
         if messageName == "update" {
             let injections = InjectionManager.getEnabledInjections()
             update(page: page, withInjections: injections)
+        }
+    }
+    
+    @objc
+    fileprivate func updateAllPages() {
+        let injections = InjectionManager.getEnabledInjections()
+        SFSafariApplication.getAllWindows { windows in
+            for window in windows {
+                window.getAllTabs { tabs in
+                    for tab in tabs {
+                        tab.getPagesWithCompletionHandler { pages in
+                            for page in pages ?? [] {
+                                self.update(page: page, withInjections: injections)
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     

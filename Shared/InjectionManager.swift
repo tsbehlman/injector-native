@@ -17,6 +17,12 @@ class InjectionManager {
          error conditions that could cause the creation of the store to fail.
          */
         let container = InjectorSharedPersistentContainer(name: "Injector")
+        let description = container.persistentStoreDescriptions.first
+        description?.setOption(true as NSNumber,
+                               forKey: NSPersistentHistoryTrackingKey)
+        let remoteChangeKey = "NSPersistentStoreRemoteChangeNotificationOptionKey"
+        description?.setOption(true as NSNumber,
+                               forKey: remoteChangeKey)
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error {
                 // Replace this implementation with code to handle the error appropriately.
