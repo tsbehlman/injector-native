@@ -19,7 +19,7 @@ final class Injection: NSManagedObject {
     @NSManaged var scriptLoadBehavior: Int16
     
     convenience init(from values: [String: Any]) {
-        self.init(entity: InjectionManager.shared.injectionEntity, insertInto: InjectionManager.shared.injectionContext)
+        self.init(entity: InjectionStorage.shared.injectionEntity, insertInto: InjectionStorage.shared.injectionContext)
         update(from: values)
     }
     

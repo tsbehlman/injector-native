@@ -34,28 +34,28 @@ class InjectionManagerController: NSViewController, WKScriptMessageHandler {
     }
     
     func retrieveInjections() throws {
-        let injections = InjectionManager.shared.getInjections().map { $0.toDictionary() }
+        let injections = InjectionStorage.shared.getInjections().map { $0.toDictionary() }
         let json = String(data: try JSONSerialization.data(withJSONObject: injections, options: []), encoding: .utf8)!
         webView!.evaluateJavaScript("hasLoadedInjections(\(json))")
     }
     
     func createInjection(_ data: [String: Any]) throws {
         let injection = Injection(from: data)
-        try InjectionManager.shared.injectionContext.save()
+        try InjectionStorage.shared.injectionContext.save()
         let json = String(data: try JSONSerialization.data(withJSONObject: injection.toDictionary(), options: []), encoding: .utf8)!
         webView!.evaluateJavaScript("injectionWasCreated(\(json))")
     }
     
     func updateInjection(_ id: String, withData data: [String: Any]) throws {
-        let injection = try InjectionManager.shared.getInjection(id)
+        let injection = try InjectionStorage.shared.getInjection(id)
         injection.update(from: data)
-        try InjectionManager.shared.injectionContext.save()
+        try InjectionStorage.shared.injectionContext.save()
     }
     
     func deleteInjection(_ id: String) throws {
-        let injection = try InjectionManager.shared.getInjection(id)
-        InjectionManager.shared.injectionContext.delete(injection)
-        try InjectionManager.shared.injectionContext.save()
+        let injection = try InjectionStorage.shared.getInjection(id)
+        InjectionStorage.shared.injectionContext.delete(injection)
+        try InjectionStorage.shared.injectionContext.save()
     }
     
     override func loadView() {

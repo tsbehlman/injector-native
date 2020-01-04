@@ -8,8 +8,8 @@
 
 import CoreData
 
-class InjectionManager {
-    static let shared = InjectionManager()
+class InjectionStorage {
+    static let shared = InjectionStorage()
     
     let persistentContainer: NSPersistentContainer
     let injectionContext: NSManagedObjectContext

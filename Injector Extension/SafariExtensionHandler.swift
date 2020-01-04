@@ -13,7 +13,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         super.init()
         
         if #available(OSXApplicationExtension 10.15, *) {
-            if let injectionsDidChangeEvent = InjectionManager.shared.observeInjectionChanges(forContext: .safariExtension) {
+            if let injectionsDidChangeEvent = InjectionStorage.shared.observeInjectionChanges(forContext: .safariExtension) {
                 injectionsDidChangeEvent.addObserver() { changedInjections in
                     SafariExtensionHandler.updateAllPages(withInjections: changedInjections)
                 }
@@ -23,7 +23,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     
     override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String : Any]?) {
         if messageName == "update" {
-            let injections = InjectionManager.shared.getEnabledInjections()
+            let injections = InjectionStorage.shared.getEnabledInjections()
             SafariExtensionHandler.update(page: page, withInjections: injections)
         }
     }
