@@ -53,7 +53,7 @@
 	const scriptLoadPromises = [
 		Promise.resolve(),
 		document.readyState !== "loading" ? Promise.resolve() : listenForOneEvent( document, "DOMContentLoaded", false ),
-		document.readyState === "complete" ? Promise.resolve() : listenForOneEvent( document, "load", false ),
+		document.readyState === "complete" ? Promise.resolve() : listenForOneEvent( window, "load", false ),
 	];
 	
 	safari.self.addEventListener( "message", event => {
