@@ -15,6 +15,9 @@ class InjectionManager {
     let injectionContext: NSManagedObjectContext
     let injectionEntity: NSEntityDescription
     
+    private var appContext: InjectorContext?
+    private let injectionsDidChangeEvent = Event<[Injection]>()
+    
     private init() {
         /*
          The persistent container for the application. This implementation
@@ -23,10 +26,11 @@ class InjectionManager {
          error conditions that could cause the creation of the store to fail.
          */
         persistentContainer = InjectorSharedPersistentContainer(name: "Injector")
-        let description = persistentContainer.persistentStoreDescriptions.first!
-        description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
-        let remoteChangeKey = "NSPersistentStoreRemoteChangeNotificationOptionKey"
-        description.setOption(true as NSNumber, forKey: remoteChangeKey)
+        if #available(OSX 10.15, *) {
+            let description = persistentContainer.persistentStoreDescriptions.first!
+            description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+            description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+        }
         persistentContainer.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error {
                 // Replace this implementation with code to handle the error appropriately.
@@ -48,7 +52,76 @@ class InjectionManager {
         injectionEntity = NSEntityDescription.entity(forEntityName: "Injection", in: injectionContext)!
     }
     
+    @available(OSX 10.15, *)
+    func observeInjectionChanges(forContext context: InjectorContext) -> Event<[Injection]>? {
+        if appContext != nil {
+            return nil
+        }
+        
+        appContext = context
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(persistentStoreDidReceiveRemoteChange),
+            name: .NSPersistentStoreRemoteChange, 
+            object: persistentContainer.persistentStoreCoordinator
+        )
+        
+        return injectionsDidChangeEvent
+    }
     
+    @objc
+    @available(OSX 10.15, *)
+    fileprivate func persistentStoreDidReceiveRemoteChange() {
+        injectionContext.performAndWait {
+            if mergeHistory() {
+                deleteHistory()
+            }
+        }
+    }
+    
+    private func mergeHistory() -> Bool {
+        let request = NSPersistentHistoryChangeRequest
+            .fetchHistory(after: appContext!.lastHistoryTransactionTimestamp ?? .distantPast)
+        
+        let result = try? injectionContext.execute(request) as? NSPersistentHistoryResult
+        
+        guard 
+            let history = result?.result as? [NSPersistentHistoryTransaction],
+            !history.isEmpty
+        else { return false }
+        
+        var changedObjectIDs = Set<NSManagedObjectID>()
+        
+        for transaction in history {
+            if let userInfo = transaction.objectIDNotification().userInfo {
+                NSManagedObjectContext.mergeChanges(fromRemoteContextSave: userInfo, into: [injectionContext])
+            }
+            transaction.changes?.forEach() { change in
+                changedObjectIDs.insert( change.changedObjectID )
+            }
+        }
+        
+        appContext!.lastHistoryTransactionTimestamp = history.last!.timestamp
+        
+        let changedInjections = changedObjectIDs.map() { objectID in
+            try! injectionContext.existingObject(with: objectID) as! Injection
+        }
+        
+        if !changedInjections.isEmpty {
+            injectionsDidChangeEvent.trigger(changedInjections)
+        }
+        
+        return true
+    }
+    
+    private func deleteHistory() {
+        let timestamp = InjectorContext.allCases
+            .map { $0.lastHistoryTransactionTimestamp ?? .distantPast }
+            .min() ?? .distantPast
+        let deleteHistoryRequest = NSPersistentHistoryChangeRequest.deleteHistory(before: timestamp)
+        let _ = try? injectionContext.execute(deleteHistoryRequest)
+    }
     
     func getInjections() -> [Injection] {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Injection")

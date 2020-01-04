@@ -11,32 +11,31 @@ import SafariServices
 class SafariExtensionHandler: SFSafariExtensionHandler {
     override init() {
         super.init()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(updateAllPages),
-            name: NSNotification.Name(
-                rawValue: "NSPersistentStoreRemoteChangeNotification"), 
-            object: InjectionManager.shared.persistentContainer.persistentStoreCoordinator
-        )
+        
+        if #available(OSXApplicationExtension 10.15, *) {
+            if let injectionsDidChangeEvent = InjectionManager.shared.observeInjectionChanges(forContext: .safariExtension) {
+                injectionsDidChangeEvent.addObserver() { changedInjections in
+                    SafariExtensionHandler.updateAllPages(withInjections: changedInjections)
+                }
+            }
+        }
     }
     
     override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String : Any]?) {
         if messageName == "update" {
             let injections = InjectionManager.shared.getEnabledInjections()
-            update(page: page, withInjections: injections)
+            SafariExtensionHandler.update(page: page, withInjections: injections)
         }
     }
     
-    @objc
-    fileprivate func updateAllPages() {
-        let injections = InjectionManager.shared.getInjections()
+    static func updateAllPages(withInjections injections: [Injection]) {
         SFSafariApplication.getAllWindows { windows in
             for window in windows {
                 window.getAllTabs { tabs in
                     for tab in tabs {
                         tab.getPagesWithCompletionHandler { pages in
                             for page in pages ?? [] {
-                                self.update(page: page, withInjections: injections)
+                                SafariExtensionHandler.update(page: page, withInjections: injections)
                             }
                         }
                     }
@@ -45,7 +44,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         }
     }
     
-    fileprivate func update(page: SFSafariPage, withInjections injections: [Injection]) {
+    private static func update(page: SFSafariPage, withInjections injections: [Injection]) {
         page.getPropertiesWithCompletionHandler { properties in
             guard let url = properties?.url else { return }
             let applicableInjections = injections

@@ -15,6 +15,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.tabbingMode = .disallowed
         window.title = "Injector"
         window.makeKeyAndOrderFront(self)
+        
+        if #available(OSX 10.15, *) {
+            let _ = InjectionManager.shared.observeInjectionChanges(forContext: .manager)
+        }
     }
     
     // MARK: - Core Data Saving and Undo support

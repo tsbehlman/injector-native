@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB60698C23BEEA9F00F8CA20 /* InjectionDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB60698B23BEEA9F00F8CA20 /* InjectionDefaults.swift */; };
+		AB60698D23BEEDE500F8CA20 /* InjectionDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB60698B23BEEA9F00F8CA20 /* InjectionDefaults.swift */; };
+		AB60698F23BEF0E100F8CA20 /* InjectorContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB60698E23BEF0E100F8CA20 /* InjectorContext.swift */; };
+		AB60699023BEF6DF00F8CA20 /* InjectorContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB60698E23BEF0E100F8CA20 /* InjectorContext.swift */; };
+		AB60699223BF007B00F8CA20 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB60699123BF007B00F8CA20 /* Event.swift */; };
+		AB60699323BF06F900F8CA20 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB60699123BF007B00F8CA20 /* Event.swift */; };
 		AB656CD7227F94570002D4DD /* Injector.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = AB656CD6227F94570002D4DD /* Injector.entitlements */; };
 		AB656CD9227F94570002D4DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB656CD8227F94570002D4DD /* AppDelegate.swift */; };
 		AB656CDE227F94570002D4DD /* InjectionManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB656CDD227F94570002D4DD /* InjectionManagerController.swift */; };
@@ -58,6 +64,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AB60698B23BEEA9F00F8CA20 /* InjectionDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectionDefaults.swift; sourceTree = "<group>"; };
+		AB60698E23BEF0E100F8CA20 /* InjectorContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectorContext.swift; sourceTree = "<group>"; };
+		AB60699123BF007B00F8CA20 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		AB656CD3227F94570002D4DD /* Injector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Injector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB656CD6227F94570002D4DD /* Injector.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Injector.entitlements; sourceTree = "<group>"; };
 		AB656CD8227F94570002D4DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -167,6 +176,9 @@
 				ABB3D32C229C78AD008F1767 /* Injection.swift */,
 				AB75D557228CEE4B00DC18D5 /* Injector.xcdatamodeld */,
 				ABB3537922A36CC9002F8FF1 /* RegularExpressionWithCustomTemplate.swift */,
+				AB60698B23BEEA9F00F8CA20 /* InjectionDefaults.swift */,
+				AB60698E23BEF0E100F8CA20 /* InjectorContext.swift */,
+				AB60699123BF007B00F8CA20 /* Event.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -292,10 +304,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				ABB3537A22A36CC9002F8FF1 /* RegularExpressionWithCustomTemplate.swift in Sources */,
+				AB60699223BF007B00F8CA20 /* Event.swift in Sources */,
 				ABB3D32D229C78AD008F1767 /* Injection.swift in Sources */,
 				AB656D19227FDAF30002D4DD /* Application.swift in Sources */,
 				AB75D559228CEE4B00DC18D5 /* Injector.xcdatamodeld in Sources */,
 				AB656CDE227F94570002D4DD /* InjectionManagerController.swift in Sources */,
+				AB60698F23BEF0E100F8CA20 /* InjectorContext.swift in Sources */,
+				AB60698C23BEEA9F00F8CA20 /* InjectionDefaults.swift in Sources */,
 				AB656CD9227F94570002D4DD /* AppDelegate.swift in Sources */,
 				AB75D556228CED0800DC18D5 /* InjectorSharedPersistentContainer.swift in Sources */,
 				AB8087C322939DCA00F7CCE4 /* InjectionManager.swift in Sources */,
@@ -310,8 +325,11 @@
 				AB656CEF227F94590002D4DD /* SafariExtensionHandler.swift in Sources */,
 				AB75D55A228CEEF900DC18D5 /* Injector.xcdatamodeld in Sources */,
 				ABB3D332229C9380008F1767 /* Injection.swift in Sources */,
+				AB60699323BF06F900F8CA20 /* Event.swift in Sources */,
 				AB75D55B228CEF0200DC18D5 /* InjectorSharedPersistentContainer.swift in Sources */,
+				AB60698D23BEEDE500F8CA20 /* InjectionDefaults.swift in Sources */,
 				ABB3537B22A37607002F8FF1 /* RegularExpressionWithCustomTemplate.swift in Sources */,
+				AB60699023BEF6DF00F8CA20 /* InjectorContext.swift in Sources */,
 				ABB3D3232293B912008F1767 /* InjectionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
