@@ -9,21 +9,25 @@
 import CoreData
 
 class InjectionManager {
-    static var persistentContainer: NSPersistentContainer = {
+    static let shared = InjectionManager()
+    
+    let persistentContainer: NSPersistentContainer
+    let injectionContext: NSManagedObjectContext
+    let injectionEntity: NSEntityDescription
+    
+    private init() {
         /*
          The persistent container for the application. This implementation
          creates and returns a container, having loaded the store for the
          application to it. This property is optional since there are legitimate
          error conditions that could cause the creation of the store to fail.
          */
-        let container = InjectorSharedPersistentContainer(name: "Injector")
-        let description = container.persistentStoreDescriptions.first
-        description?.setOption(true as NSNumber,
-                               forKey: NSPersistentHistoryTrackingKey)
+        persistentContainer = InjectorSharedPersistentContainer(name: "Injector")
+        let description = persistentContainer.persistentStoreDescriptions.first!
+        description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
         let remoteChangeKey = "NSPersistentStoreRemoteChangeNotificationOptionKey"
-        description?.setOption(true as NSNumber,
-                               forKey: remoteChangeKey)
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+        description.setOption(true as NSNumber, forKey: remoteChangeKey)
+        persistentContainer.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
@@ -39,23 +43,18 @@ class InjectionManager {
                 fatalError("Unresolved error \(error)")
             }
         })
-        return container
-    }()
+        
+        injectionContext = persistentContainer.viewContext
+        injectionEntity = NSEntityDescription.entity(forEntityName: "Injection", in: injectionContext)!
+    }
     
-    static var context = {
-        return persistentContainer.viewContext
-    }()
     
-    static var injectionEntity = {
-        return NSEntityDescription.entity(forEntityName: "Injection", in: context)!
-    }()
     
-    open class func getInjections() -> [Injection] {
+    func getInjections() -> [Injection] {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Injection")
         
         do {
-            let result = try context.fetch(request)
-            return result as! [Injection]
+            return try injectionContext.fetch(request) as! [Injection]
         } catch {
             print("InjectionManager failed to list injections")
         }
@@ -63,12 +62,12 @@ class InjectionManager {
         return []
     }
     
-    open class func getEnabledInjections() -> [Injection] {
+    func getEnabledInjections() -> [Injection] {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Injection")
         request.predicate = NSPredicate(format: "isEnabled == true")
         
         do {
-            let result = try context.fetch(request)
+            let result = try injectionContext.fetch(request)
             return result as! [Injection]
         } catch {
             print("InjectionManager failed to list injections")
@@ -77,8 +76,8 @@ class InjectionManager {
         return []
     }
     
-    open class func getInjection(_ id: String) throws -> Injection {
-        let objectID = context.persistentStoreCoordinator!.managedObjectID(forURIRepresentation: URL(string: id)!)!
-        return try context.existingObject(with: objectID) as! Injection
+    func getInjection(_ id: String) throws -> Injection {
+        let objectID = injectionContext.persistentStoreCoordinator!.managedObjectID(forURIRepresentation: URL(string: id)!)!
+        return try injectionContext.existingObject(with: objectID) as! Injection
     }
 }

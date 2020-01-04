@@ -9,7 +9,6 @@
 import SafariServices
 
 class SafariExtensionHandler: SFSafariExtensionHandler {
-    
     override init() {
         super.init()
         NotificationCenter.default.addObserver(
@@ -17,20 +16,20 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
             selector: #selector(updateAllPages),
             name: NSNotification.Name(
                 rawValue: "NSPersistentStoreRemoteChangeNotification"), 
-            object: InjectionManager.persistentContainer.persistentStoreCoordinator
+            object: InjectionManager.shared.persistentContainer.persistentStoreCoordinator
         )
     }
     
     override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String : Any]?) {
         if messageName == "update" {
-            let injections = InjectionManager.getEnabledInjections()
+            let injections = InjectionManager.shared.getEnabledInjections()
             update(page: page, withInjections: injections)
         }
     }
     
     @objc
     fileprivate func updateAllPages() {
-        let injections = InjectionManager.getEnabledInjections()
+        let injections = InjectionManager.shared.getEnabledInjections()
         SFSafariApplication.getAllWindows { windows in
             for window in windows {
                 window.getAllTabs { tabs in
