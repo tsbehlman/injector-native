@@ -6,7 +6,6 @@
 		<script>
 			window.injectionPromise = new Promise( ( resolve, reject ) => {
 				window.hasLoadedInjections = injections => {
-					window.injectionPromise = undefined;
 					window.hasLoadedInjections = undefined;
 					resolve( injections );
 				}

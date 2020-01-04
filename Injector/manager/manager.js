@@ -100,6 +100,20 @@
 		} );
 	}
 	
+	// <DEBUG>
+	window.debug = {
+		createInjection,
+		updateInjection,
+		deleteInjection,
+		getInjections() {
+			const json = JSON.stringify( Array.from( injectionsById.values() ) );
+			const includes = form.includes.value;
+			form.includes.value = json;
+		},
+		loadInjections: injections => injections.forEach( createInjection )
+	};
+	// </DEBUG>
+	
 	function setTitle( newTitle ) {
 		title.nodeValue = newTitle;
 	}
@@ -221,6 +235,7 @@
 	};
 	
 	injectionPromise.then( injections => {
+        window.injectionPromise = undefined;
 		for( const injection of injections ) {
 			injectionsById.set( injection.id, injection );
 			createListItem( injection.id, injection );
