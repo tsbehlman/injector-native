@@ -29,7 +29,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     
     @objc
     fileprivate func updateAllPages() {
-        let injections = InjectionManager.shared.getEnabledInjections()
+        let injections = InjectionManager.shared.getInjections()
         SFSafariApplication.getAllWindows { windows in
             for window in windows {
                 window.getAllTabs { tabs in
@@ -49,10 +49,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         page.getPropertiesWithCompletionHandler { properties in
             guard let url = properties?.url else { return }
             let applicableInjections = injections
-                .filter { $0.matchesURL(url) }
-            if applicableInjections.isEmpty {
-                return
-            }
+                .filter { $0.isEnabled && $0.matchesURL(url) }
             let userInfo = ["injections": applicableInjections
                 .map { $0.toDictionary() }
             ]
