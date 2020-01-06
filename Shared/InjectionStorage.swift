@@ -73,9 +73,9 @@ class InjectionStorage {
     @objc
     @available(OSX 10.15, *)
     fileprivate func persistentStoreDidReceiveRemoteChange() {
-        injectionContext.performAndWait {
-            if mergeHistory() {
-                deleteHistory()
+        injectionContext.perform {
+            if self.mergeHistory() {
+                self.deleteHistory()
             }
         }
     }
