@@ -14,8 +14,8 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         
         if #available(OSXApplicationExtension 10.15, *) {
             if let injectionsDidChangeEvent = InjectionStorage.shared.observeInjectionChanges(forContext: .safariExtension) {
-                injectionsDidChangeEvent.addObserver() { changedInjections in
-                    SafariExtensionHandler.updateAllPages(withInjections: changedInjections)
+                injectionsDidChangeEvent.addObserver() {
+                    SafariExtensionHandler.updateAllPages()
                 }
             }
         }
@@ -28,7 +28,8 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         }
     }
     
-    static func updateAllPages(withInjections injections: [Injection]) {
+    static func updateAllPages() {
+        let injections = InjectionStorage.shared.getEnabledInjections()
         SFSafariApplication.getAllWindows { windows in
             for window in windows {
                 window.getAllTabs { tabs in
@@ -47,12 +48,13 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     private static func update(page: SFSafariPage, withInjections injections: [Injection]) {
         page.getPropertiesWithCompletionHandler { properties in
             guard let url = properties?.url else { return }
-            let applicableInjections = injections
-                .filter { $0.isEnabled && $0.matchesURL(url) }
-            let userInfo = ["injections": applicableInjections
-                .map { $0.toDictionary() }
-            ]
-            page.dispatchMessageToScript(withName: "update", userInfo: userInfo)
+            page.dispatchMessageToScript(
+                withName: "update",
+                userInfo: ["injections": injections
+                    .filter { $0.matchesURL(url) }
+                    .map { $0.toDictionary() }
+                ]
+            )
         }
     }
     

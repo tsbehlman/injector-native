@@ -8,16 +8,16 @@
 
 import Foundation
 
-class Event<Payload> {
-    private var observers = [(Payload) -> Void]()
+class Event {
+    private var observers = [() -> Void]()
     
-    func addObserver(using closure: @escaping (Payload) -> Void) {
+    func addObserver(using closure: @escaping () -> Void) {
         observers.append(closure)
     }
     
-    func trigger(_ payload: Payload) {
+    func trigger() {
         for observer in observers {
-            observer(payload)
+            observer()
         }
     }
 }

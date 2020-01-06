@@ -16,7 +16,7 @@ class InjectionStorage {
     let injectionEntity: NSEntityDescription
     
     private var appContext: InjectorContext?
-    private let injectionsDidChangeEvent = Event<[Injection]>()
+    private let injectionsDidChangeEvent = Event()
     
     private init() {
         /*
@@ -53,7 +53,7 @@ class InjectionStorage {
     }
     
     @available(OSX 10.15, *)
-    func observeInjectionChanges(forContext context: InjectorContext) -> Event<[Injection]>? {
+    func observeInjectionChanges(forContext context: InjectorContext) -> Event? {
         if appContext != nil {
             return nil
         }
@@ -104,12 +104,8 @@ class InjectionStorage {
         
         appContext!.lastHistoryTransactionTimestamp = history.last!.timestamp
         
-        let changedInjections = changedObjectIDs.map() { objectID in
-            try! injectionContext.existingObject(with: objectID) as! Injection
-        }
-        
-        if !changedInjections.isEmpty {
-            injectionsDidChangeEvent.trigger(changedInjections)
+        if !changedObjectIDs.isEmpty {
+            injectionsDidChangeEvent.trigger()
         }
         
         return true
