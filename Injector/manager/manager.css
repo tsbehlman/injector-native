@@ -1,3 +1,8 @@
+html {
+	background-color: -apple-system-background;
+	color-scheme: light dark;
+}
+
 * {
 	box-sizing: border-box;
 }
@@ -20,7 +25,7 @@
 
 	min-height: 100%;
 	background-size: 100% 72px;
-	background-image: linear-gradient(180deg, transparent, transparent 50%, #f5f5f5 50%);
+	background-image: linear-gradient(180deg, -apple-system-even-alternating-content-background, -apple-system-even-alternating-content-background 50%, -apple-system-odd-alternating-content-background 50%);
 }
 
 #list > a {
@@ -31,23 +36,23 @@
 	text-overflow: ellipsis;
 	overflow:hidden;
 	text-decoration: none;
-	color: #000;
+	color: -apple-system-label;
 }
 
 #list > a.disabled {
-	color: #888;
+	color: -apple-system-tertiary-label;
 }
 
 #list > a.selected {
-	color: #fff;
-	background-color: #006bd2;
+	color: -apple-system-alternate-selected-text;
+	background-color: -apple-system-control-accent;
 }
 
 #list-control {
 	flex: none;
 	height: 20px;
 	background-image: linear-gradient(0deg, #f5f5f5, #fafafa);
-	border-top: 1px solid #b4b4b4;
+	border-top: 1px solid -apple-system-container-border;
 }
 
 #list-control > button {
@@ -56,12 +61,12 @@
 	height: 19px;
 	padding: 4px 6px;
 	border-style: none;
-	border-right: 1px solid #b4b4b4;
+	border-right: 1px solid -apple-system-container-border;
 	background-color: transparent;
 }
 
 #list-control > button:active {
-	background-color: rgba(0,0,0,.125);
+	background-color: -apple-system-unemphasized-selected-text-background;
 }
 
 #list-control > button:disabled:active {
@@ -74,9 +79,13 @@
 }
 
 #list-control path {
-	stroke: #000;
+	stroke: -apple-system-label;
 	stroke-width: 1;
 	fill: none;
+}
+
+#list-control :disabled path {
+	stroke: -apple-system-container-border;
 }
 
 /* * * * * * * *\
@@ -98,31 +107,22 @@ html {
 body {
 	display: flex;
 	margin: 0;
-	background-color: #ededed;
 }
 
 aside, form {
 	display: flex;
 	flex-direction: column;
-	background-color: #fff;
 }
 
 aside {
 	flex: 1;
 	min-width: 200px;
-	border-right: 1px solid #b4b4b4;
+	border-right: 1px solid -apple-system-container-border;
 }
 
 form {
 	flex: 4.5;
-}
-
-/* * * * * * *\
- * List
-\* * * * * * */
-
-#list-control :disabled path {
-	stroke: #c5c5c5;
+	background-color: -apple-system-grouped-background;
 }
 
 /* * * * * * * * *\
@@ -137,7 +137,7 @@ form {
 	margin: 0;
 	padding: 0 7px 0 10px;
 	line-height: 35px;
-	border-bottom: 1px solid #c5c5c5;
+	border-bottom: 1px solid -apple-system-container-border;
 	font-size: 18px;
 	font-weight: normal;
 }
@@ -164,7 +164,6 @@ section > * + * {
 
 label {
 	display: block;
-	color: #555;
 }
 
 label > input, label > select {
@@ -173,13 +172,14 @@ label > input, label > select {
 
 label.collapsible, textarea, input[type="text"] {
 	width: 100%;
-	border: 1px solid #a5a5a5;
+	border: 1px solid -apple-system-container-border;
+	background-clip: padding-box;
 }
 
 label.collapsible {
 	padding: 0 5px;
 	height: 22px;
-	background-color: #e5e5e5;
+	background-color: -apple-system-separator;
 	line-height: 21px;
 	cursor: pointer;
 }
@@ -190,7 +190,7 @@ label.collapsible > svg {
 }
 
 label.collapsible path {
-	fill: #555;
+	fill: -apple-system-gray;
 	transform: rotate3d(0,0,1,90deg);
 	transform-origin: 3px 4px 0px;
 }
@@ -235,9 +235,21 @@ input[type="text"] {
 	font-size: 11px;
 	line-height: 1.25em;
 	margin-top: 3px;
-	color: #aaa;
+	color: -apple-system-secondary-label;
 }
 
 .fragment {
 	display: inline-block;
+}
+
+@media (prefers-color-scheme: dark) {
+	#list {
+		/* background-image is repeated here in order to tell WebKit this gradient changes with the color scheme */
+		background-image: linear-gradient(180deg, -apple-system-even-alternating-content-background, -apple-system-even-alternating-content-background 50%, -apple-system-odd-alternating-content-background 50%);
+	}
+	
+	#list-control {
+		background-image: none;
+		background-color: -apple-system-grid;
+	}
 }
